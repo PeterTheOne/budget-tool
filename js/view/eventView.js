@@ -5,7 +5,7 @@ window.EventView = Backbone.View.extend({
     template: _.template(
         '<form>' +
             '<td><input class="amount" name="amount" type="number" value="<%=amount%>"></td>' +
-            '<td><input class="date" name="date" type="date" value="<%=moment(date).format(\'DD.MM.YYYY\')%>"></td>' +
+            '<td><input class="date typeDate" name="date" type="text" value="<%=moment(date).format(\'DD.MM.YYYY\')%>"></td>' +
             '<td><input class="repeatDay" name="repeatDay" type="number" value="<%=repeatDay%>"></td>' +
             '<td><input class="repeatMonth" name="repeatMonth" type="number" value="<%=repeatMonth%>"></td>' +
             '<td><input class="repeatYear" name="repeatYear" type="number" value="<%=repeatYear%>"></td>' +
@@ -21,7 +21,7 @@ window.EventView = Backbone.View.extend({
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
 
-        this.$el.find('input[type=date]').datepicker({dateFormat: 'dd.mm.yy'});
+        this.$el.find('input.typeDate').datepicker({dateFormat: 'dd.mm.yy'});
 
         var self = this;
         this.$el.find('.amount').on('keyup change', function() {

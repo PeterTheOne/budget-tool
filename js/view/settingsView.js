@@ -10,8 +10,8 @@ window.SettingsView = Backbone.View.extend({
                     '<th>displayEndDate</th>' +
                 '</tr>' +
                 '<tr>' +
-                    '<td><input class="displayStartDate" name="displayStartDate" type="date" value="<%=moment(displayStartDate).format(\'DD.MM.YYYY\')%>"></td>' +
-                    '<td><input class="displayEndDate" name="displayEndDate" type="date" value="<%=moment(displayEndDate).format(\'DD.MM.YYYY\')%>"></td>' +
+                    '<td><input class="displayStartDate typeDate" name="displayStartDate" type="text" value="<%=moment(displayStartDate).format(\'DD.MM.YYYY\')%>"></td>' +
+                    '<td><input class="displayEndDate typeDate" name="displayEndDate" type="text" value="<%=moment(displayEndDate).format(\'DD.MM.YYYY\')%>"></td>' +
                 '</tr>' +
             '</table>' +
         '</form>'
@@ -24,7 +24,7 @@ window.SettingsView = Backbone.View.extend({
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
 
-        this.$el.find('input[type=date]').datepicker({dateFormat: 'dd.mm.yy'});
+        this.$el.find('input.typeDate').datepicker({dateFormat: 'dd.mm.yy'});
 
         var self = this;
         this.$el.find('.displayStartDate').on('keyup change', function() {

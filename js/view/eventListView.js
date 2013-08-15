@@ -23,7 +23,7 @@ window.EventListView = Backbone.View.extend({
                 table.append(self.templateTableHead());
             }
             count++;
-            
+
             var eventView = new EventView({model: event});
             eventView.render();
             table.append(eventView.el);
