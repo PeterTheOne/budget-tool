@@ -1,0 +1,5 @@
+$(function() {
+
+    budgetTool.start();
+
+});
