@@ -1,17 +1,8 @@
 window.LineGraphView = Backbone.View.extend({
-
     plot: null,
 
     initialize: function() {
-        this.model.on('change', this.updateValues, this);
-    },
-
-    updateValues: function() {
-        var values = this.model.get('values');
-
-        this.plot.setData([values]);
-        this.plot.setupGrid();
-        this.plot.draw();
+        this.model.on('change', this.render, this);
     },
 
     render: function() {
@@ -24,10 +15,17 @@ window.LineGraphView = Backbone.View.extend({
                     show: true,
                     fill: true,
                     steps: false
+                },
+                points: {
+                    show: true
                 }
             },
             xaxis: {
                 mode: "time",
+                timezone: "browser",
+                timeformat: "%d.%m.%Y",
+                min: this.model.get('displayStartDate'),
+                max: this.model.get('displayEndDate'),
                 minTickSize: [1, "day"]
             }
         });

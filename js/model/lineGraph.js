@@ -1,7 +1,8 @@
 window.LineGraph = Backbone.Model.extend({
 
     defaults: {
-        values: []
+        displayStartDate: 0,
+        displayEndDate: 0
     },
 
     initialize: function() {
@@ -12,9 +13,16 @@ window.LineGraph = Backbone.Model.extend({
         var displayStartDate = moment(settings.get('displayStartDate'));
         var displayEndDate = moment(settings.get('displayEndDate'));
 
+        this.set('displayStartDate', displayStartDate.valueOf());
+        this.set('displayEndDate', displayEndDate.valueOf());
+
         var eventValues = {};
+        var earliestEventData = displayEndDate;
         events.forEach(function(event) {
             var currentEventDate = moment(event.get('date'));
+            if (earliestEventData.diff(currentEventDate) > 0) {
+                earliestEventData = currentEventDate;
+            }
             do {
                 if (eventValues.hasOwnProperty(currentEventDate.valueOf())) {
                     eventValues[currentEventDate.valueOf()] += event.get('amount');
@@ -33,7 +41,8 @@ window.LineGraph = Backbone.Model.extend({
         });
 
         var values = [];
-        for (var currentDate = displayStartDate, currentValue = 0; currentDate.diff(displayEndDate) <= 0; currentDate.add('days', 1)) {
+
+        for (var currentDate = earliestEventData, currentValue = 0; currentDate.diff(displayEndDate) <= 0; currentDate.add('days', 1)) {
             if (eventValues.hasOwnProperty(currentDate.valueOf())) {
                 currentValue += eventValues[currentDate.valueOf()];
             }
