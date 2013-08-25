@@ -2,6 +2,7 @@ window.SettingsView = Backbone.View.extend({
     className: 'settingsView clearfix',
 
     template: _.template(
+        '<h2>Settings</h2>' +
         '<form>' +
             '<table>' +
                 '<tr>' +

@@ -11,27 +11,29 @@ window.budgetTool = new (Backbone.Router.extend({
     index: function() {
         var $el = $('.container');
 
+        // init models and collections
         var settings = new Settings();
 
         var categories = new CategoryList();
-        var category = new Category({name: 'defaultCategory'});
-        categories.add(category);
-
         var events = new EventList();
-        var event = new Event();
-        events.add(event);
+        events.categories = categories;
 
         var lineGraph = new LineGraph();
-
-        lineGraph.calculateValues(settings, events);
-
-        settings.on('change', function() {
-            lineGraph.calculateValues(settings, events);
-        });
-        events.on('change add remove', function() {
-            lineGraph.calculateValues(settings, events);
+        lineGraph.set({
+            settings: settings,
+            events: events
         });
 
+        // add models to collections
+        var category = new Category({name: 'defaultCategory'});
+        categories.add(category);
+        var event = new Event();
+        event.set({
+            categories: categories
+        });
+        events.add(event);
+
+        // render views
         var lineGraphView = new LineGraphView({model: lineGraph});
         lineGraphView.render();
         $el.append(lineGraphView.el);

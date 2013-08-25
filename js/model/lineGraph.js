@@ -2,14 +2,33 @@ window.LineGraph = Backbone.Model.extend({
 
     defaults: {
         displayStartDate: 0,
-        displayEndDate: 0
+        displayEndDate: 0,
+        settings: undefined,
+        events: undefined
     },
 
     initialize: function() {
+        var self = this;
+        this.on('change:settings', function() {
+            var settings = this.get('settings');
 
+            settings.on('change', function() {
+                self.calculateValues();
+            });
+        }, this);
+        this.on('change:events', function() {
+            var events = this.get('events');
+
+            events.on('change add remove', function() {
+                self.calculateValues();
+            });
+        }, this);
     },
 
-    calculateValues: function(settings, events) {
+    calculateValues: function() {
+        var settings = this.get('settings');
+        var events = this.get('events');
+
         var displayStartDate = moment(settings.get('displayStartDate'));
         var displayEndDate = moment(settings.get('displayEndDate'));
 

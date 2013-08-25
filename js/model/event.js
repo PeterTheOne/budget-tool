@@ -6,7 +6,8 @@ window.Event = Backbone.Model.extend({
         repeatDay: 0,
         repeatMonth: 0,
         repeatYear: 0,
-        comment: ''
+        comment: '',
+        categories: undefined
     },
 
     initialize: function() {

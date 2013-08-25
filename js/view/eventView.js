@@ -16,7 +16,17 @@ window.EventView = Backbone.View.extend({
     ),
 
     initialize: function() {
+        this.model.get('categories').on('change add remove', this.renderCategorySelector, this);
+    },
 
+    renderCategorySelector: function() {
+        var categorySeletect = this.$el.find("select[name='category']");
+        categorySeletect.children().remove();
+        var categories = this.model.get('categories');
+        categories.forEach(function(category) {
+            var name = category.get('name');
+            categorySeletect.append('<option value="' + name + '">' + name + '</option>');
+        });
     },
 
     render: function() {
@@ -25,11 +35,8 @@ window.EventView = Backbone.View.extend({
         this.$el.find('input.typeDate').datepicker({dateFormat: 'dd.mm.yy'});
 
         var categorySeletect = this.$el.find("select[name='category']");
-        /*categories.forEach(function(category) {
-            var name = category.get('name');
-            categorySeletect.append('<option value="' + name + '">' + name + '</option>');
-        });*/
         categorySeletect.selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
+        this.renderCategorySelector();
 
         var self = this;
         this.$el.find('.amount').on('keyup change', function() {

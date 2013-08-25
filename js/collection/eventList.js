@@ -1,12 +1,13 @@
 window.EventList = Backbone.Collection.extend({
     model: Event,
 
-    initialize: function() {
-
-    },
+    categories: undefined,
 
     addEvent: function() {
         var event = new Event();
+        event.set({
+            categories: this.categories
+        });
         this.add(event);
     }
 
