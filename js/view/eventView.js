@@ -25,7 +25,7 @@ window.EventView = Backbone.View.extend({
 
         var self = this;
         this.$el.find('.amount').on('keyup change', function() {
-            self.model.set('amount', parseInt($(this).val()) || 0);
+            self.model.set('amount', parseFloat($(this).val()) || 0);
         });
         this.$el.find('.date').on('keyup change', function() {
             var dateString = $(this).val();
