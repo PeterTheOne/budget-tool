@@ -24,7 +24,7 @@ window.budgetTool = new (Backbone.Router.extend({
         settings.on('change', function() {
             lineGraph.calculateValues(settings, events);
         });
-        events.on('change', function() {
+        events.on('change add remove', function() {
             lineGraph.calculateValues(settings, events);
         });
 
