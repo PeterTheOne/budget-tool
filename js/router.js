@@ -13,6 +13,10 @@ window.budgetTool = new (Backbone.Router.extend({
 
         var settings = new Settings();
 
+        var categories = new CategoryList();
+        var category = new Category({name: 'defaultCategory'});
+        categories.add(category);
+
         var events = new EventList();
         var event = new Event();
         events.add(event);
@@ -35,6 +39,10 @@ window.budgetTool = new (Backbone.Router.extend({
         var settingsView = new SettingsView({model: settings});
         settingsView.render();
         $el.append(settingsView.el);
+
+        var categoryListView = new CategoryListView({collection: categories});
+        categoryListView.render();
+        $el.append(categoryListView.el);
 
         var eventListView = new EventListView({collection: events});
         eventListView.render();

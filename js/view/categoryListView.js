@@ -1,11 +1,11 @@
-window.EventListView = Backbone.View.extend({
-    className: 'eventListView',
+window.CategoryListView = Backbone.View.extend({
+    className: 'categoryListView',
 
-    templateHead: _.template('<h2>Events</h2>'),
+    templateHead: _.template('<h2>Categories</h2>'),
 
-    templateTableHead: _.template('<tr><th>amount</th><th>date</th><th>category</th><th>repeat day</th><th>repeat month</th><th>repeat year</th><th>comment</th><th></th></tr>'),
+    templateTableHead: _.template('<tr><th>name</th><th></th></tr>'),
 
-    templateButton: _.template('<a class="addButton btn btn-large btn-primary" href="">Add Event</a>'),
+    templateButton: _.template('<a class="addButton btn btn-large btn-primary" href="">Add Category</a>'),
 
     initialize: function() {
         this.collection.on('add remove', this.render, this);
@@ -18,15 +18,15 @@ window.EventListView = Backbone.View.extend({
 
         var table = $('<table></table>');
         var count = 0;
-        this.collection.forEach(function(event) {
+        this.collection.forEach(function(category) {
             if (count % 5 == 0) {
                 table.append(self.templateTableHead());
             }
             count++;
 
-            var eventView = new EventView({model: event});
-            eventView.render();
-            table.append(eventView.el);
+            var categoryView = new CategoryView({model: category});
+            categoryView.render();
+            table.append(categoryView.el);
         });
         this.$el.append(table);
 
