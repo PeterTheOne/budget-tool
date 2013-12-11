@@ -4,10 +4,11 @@ define([
     'backbone',
     'model/user',
     'model/session',
+    'view/menu',
     'view/register',
     'view/login',
     'model/random'
-], function($, _, Backbone, User, session, RegisterView, LoginView, Random) {
+], function($, _, Backbone, User, session, Menu, RegisterView, LoginView, Random) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'index',
@@ -16,8 +17,12 @@ define([
             'randomRequest(/)': 'randomRequest'
         },
 
+        $el: $('.content'),
+
         index: function() {
-            this.register();
+            var menu = new Menu();
+            menu.render();
+            this.$el.append(menu.el);
 
         },
 

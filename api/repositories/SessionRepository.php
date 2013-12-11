@@ -90,4 +90,16 @@ class SessionRepository extends AbstractRepository {
         $statement->bindParam(':secondsToExpire', $secondsToExpire);
         $statement->execute();
     }
+
+    /**
+     * @param $sessionToken
+     */
+    public function removeSession($sessionToken) {
+        $statement = $this->pdo->prepare('
+            DELETE FROM ' . $this->tableName . '
+            WHERE sessionToken = :sessionToken;
+        ');
+        $statement->bindParam(':sessionToken', $sessionToken);
+        $statement->execute();
+    }
 } 

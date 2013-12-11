@@ -1,0 +1,30 @@
+<ul class="nav navbar-nav navbar-right">
+    <% if(session.get('username') == null) { %>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle signIn" data-toggle="dropdown">Sign in <b class="caret"></b></a>
+        <form class="login dropdown-menu" role="form">
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" placeholder="Username" />
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" placeholder="Password" />
+            </div>
+            <div class="checkbox">
+                <label>
+                    Remember me <input id="remember" type="checkbox">
+                </label>
+            </div>
+            <button class="submit btn btn-default" type="submit">Sign in</button>
+        </form>
+    </li>
+    <% } else { %>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle username" data-toggle="dropdown"><%= session.get('username') %> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Preferences</a></li>
+            <li class="divider"></li>
+            <li><a class="logout" href="#">Logout</a></li>
+        </ul>
+    </li>
+    <% } %>
+</ul>

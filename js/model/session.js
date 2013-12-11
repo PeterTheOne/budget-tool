@@ -2,6 +2,7 @@ define([
     'backbone'
 ], function(Backbone) {
     var Session = Backbone.Model.extend({
+        idAttribute: 'sessionToken',
         url: 'api/index.php/session/',
 
         localStorageSupport: false,
@@ -21,8 +22,31 @@ define([
 
             var self = this;
 
+            // clear on destroy
+            this.on('destroy', function() {
+                this.clear();
+            });
+
+            // clear storage if session is cleared
+            this.on('reset', function() {
+                if (this.sessionStorageSupport) {
+                    sessionStorage.clear();
+                }
+                if (this.localStorageSupport) {
+                    localStorage.clear();
+                }
+                self.setHeader();
+            });
+
             // update header on change.
             this.on('change sync', function() {
+                if (this.sessionStorageSupport) {
+                    sessionStorage.clear();
+                }
+                if (this.localStorageSupport) {
+                    localStorage.clear();
+                }
+
                 var key;
                 for(key in self.attributes) {
                     if (this.sessionStorageSupport) {
@@ -31,8 +55,6 @@ define([
                     if (this.localStorageSupport) {
                         if (self.get('remember')) {
                             localStorage.setItem(key, self.attributes[key]);
-                        } else {
-                            localStorage.clear();
                         }
                     }
                 }

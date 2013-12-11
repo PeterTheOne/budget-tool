@@ -1,0 +1,11 @@
+body {
+    padding-top: 20px;
+}
+
+.nav .username {
+    font-weight: bold;
+}
+
+.nav .signIn {
+    font-weight: bold;
+}

@@ -58,6 +58,7 @@ $app->post('/user(/)', function() use($app, $config, $pdo) {
     }
 });
 
+// todo: should this be a GET request?
 $app->post('/session(/)', function() use($app, $config, $pdo) {
     try {
         $params = (array) json_decode($app->request()->getBody());
@@ -87,6 +88,29 @@ $app->post('/session(/)', function() use($app, $config, $pdo) {
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $exception->getMessage());
     }
+});
+
+
+$app->delete('/session(/)', function() use($app, $config, $pdo) {
+    try {
+        $sessionToken = $app->request()->headers->get('X-Session-Token');
+
+        $apiController = new ApiController($config, $pdo);
+        $session = $apiController->clearSession($sessionToken);
+
+        $app->response()->body(json_encode($session, JSON_PRETTY_PRINT));
+    } catch (Exception $exception) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    $result = array(
+        'exception' => $exception->getMessage()
+    );
+    $app->response()->body(json_encode($result, JSON_PRETTY_PRINT));
+
+    $app->response()->status(400);
+    $app->response()->header('X-Status-Reason', $exception->getMessage());
+}
 });
 
 $app->get('/randomRequest(/)', function() use($app, $config, $pdo) {

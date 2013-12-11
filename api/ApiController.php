@@ -113,6 +113,11 @@ class ApiController {
 
         $userRepository = new UserRepository($this->pdo);
         $user = $userRepository->getUser($username);
+        if (!$user) {
+            // todo: log invalid login attempt
+            // todo: create 401 Exception
+            throw new Exception('not authorised.');
+        }
 
         $passwordHasher = new PasswordHasher();
         $salt = $this->config->passwordSaltStatic . $user->passwordSalt;
@@ -173,5 +178,22 @@ class ApiController {
         }
 
         return $session->userId;
+    }
+
+    /**
+     * @param $sessionToken
+     *
+     * @return array
+     */
+    public function clearSession($sessionToken) {
+        $sessionRepository = new SessionRepository($this->pdo);
+        $sessionRepository->removeSession($sessionToken);
+
+        return array(
+            'username' => '',
+            'password' => '',
+            'remember' => '',
+            'sessionToken' => ''
+        );
     }
 }
