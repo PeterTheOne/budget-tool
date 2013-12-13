@@ -5,10 +5,8 @@ define([
     'model/user',
     'model/session',
     'view/menu',
-    'view/register',
-    'view/login',
-    'model/random'
-], function($, _, Backbone, User, session, Menu, RegisterView, LoginView, Random) {
+    'view/userHome'
+], function($, _, Backbone, User, session, Menu, UserHomeView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'index',
@@ -36,7 +34,8 @@ define([
         },
 
         userHome: function() {
-
+            var userHomeView = new UserHomeView();
+            userHomeView.render();
         }
 
         /*register: function() {

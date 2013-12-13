@@ -1,5 +1,6 @@
 body {
     padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .nav .username {
@@ -8,4 +9,9 @@ body {
 
 .nav .signIn {
     font-weight: bold;
+}
+
+.container {
+    /* or max-width: 970px; */
+    max-width: 750px;
 }

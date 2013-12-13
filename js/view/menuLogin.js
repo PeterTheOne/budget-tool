@@ -1,9 +1,10 @@
 define([
     'backbone',
     'underscore',
+    'sjcl',
     'text!template/menuLogin.html',
     'model/session'
-], function(Backbone, _, menuLoginTemplate, session) {
+], function(Backbone, _, sjcl, menuLoginTemplate, session) {
     var MenuLoginView = Backbone.View.extend({
         initialize: function() {
             session.on('change destroy reset', this.render, this);
