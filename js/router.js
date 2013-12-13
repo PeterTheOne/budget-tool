@@ -17,48 +17,49 @@ define([
             'randomRequest(/)': 'randomRequest'
         },
 
-        $el: $('.content'),
-
-        index: function() {
+        initialize: function() {
             var menu = new Menu();
             menu.render();
-            this.$el.append(menu.el);
+        },
 
+        index: function() {
+            // todo: switch on login/logout
+            if (session.get('username') == null) {
+                this.register();
+            } else {
+                this.userHome();
+            }
         },
 
         register: function() {
-            var $el = $('.content');
-            $el.html('<h1>user-management</h1>');
 
+        },
+
+        userHome: function() {
+
+        }
+
+        /*register: function() {
             var user = new User();
             var registerView = new RegisterView({model: user});
             registerView.render();
-            $el.append(registerView.$el);
         },
 
         login: function() {
-            var $el = $('.content');
-            $el.html('<h1>user-management</h1>');
-
             var loginView = new LoginView({model: session});
             loginView.render();
-            $el.append(loginView.$el);
         },
 
         randomRequest: function() {
-            var $el = $('.content');
-            $el.html('<h1>user-management</h1>');
-            $el.html('<h2>user-management</h2>');
-
             var random = new Random();
             random.fetch();
-        }
+        }*/
     });
 
     var initialize = function() {
         var appRouter = new AppRouter();
 
-        // Extend the View class to include a navigation method goTo
+        // Extend the View class to include a navigation method navigate
         Backbone.View.prototype.navigate = function (location) {
             appRouter.navigate(location, true);
         };
