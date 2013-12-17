@@ -4,6 +4,7 @@ require_once 'PasswordHasher.php';
 require_once 'repositories/UserRepository.php';
 require_once 'repositories/EmailConfirmRepository.php';
 require_once 'repositories/SessionRepository.php';
+require_once 'repositories/BudgetRepository.php';
 
 class ApiController {
 
@@ -195,5 +196,28 @@ class ApiController {
             'remember' => '',
             'sessionToken' => ''
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function getBudgets() {
+        $budgetRepository = new BudgetRepository($this->pdo);
+        return $budgetRepository->getBudgets();
+    }
+
+    /**
+     * @param $userId
+     * @param $sessionToken
+     *
+     * @return array
+     */
+    public function getUserBudgets($userId, $sessionToken) {
+        $sessionUserId = $this->checkSession($sessionToken);
+        $budgetRepository = new BudgetRepository($this->pdo);
+        if ($sessionUserId === $userId) {
+            return $budgetRepository->getBudgetsByUser($userId);
+        }
+        return $budgetRepository->getPublicBudgetsByUser($userId);
     }
 }
