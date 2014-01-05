@@ -1,4 +1,4 @@
-user-management
+budget-tool
 ===============
 description - todo
 
@@ -8,7 +8,7 @@ Created by:
 
 License:
 --------
-- [MIT License](http://www.opensource.org/licenses/mit-license.php)
+- [GPL License](https://gnu.org/licenses/gpl.html)
 
 Thanks to (Dependencies):
 -------------------------
