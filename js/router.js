@@ -4,15 +4,18 @@ define([
     'backbone',
     'model/user',
     'model/session',
+    'model/budget',
     'view/menu',
-    'view/userHome'
-], function($, _, Backbone, User, session, Menu, UserHomeView) {
+    'view/userHome',
+    'view/budget/budget'
+], function($, _, Backbone, User, session, Budget, Menu, UserHomeView, BudgetView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'index',
             'register(/)': 'register',
             'login(/)': 'login',
-            'randomRequest(/)': 'randomRequest'
+            'randomRequest(/)': 'randomRequest',
+            ':username/:budgetName(/)': 'budget'
         },
 
         initialize: function() {
@@ -36,23 +39,15 @@ define([
         userHome: function() {
             var userHomeView = new UserHomeView();
             userHomeView.render();
+        },
+
+        budget: function(username, budgetName) {
+            var budget = new Budget({username: username, name: budgetName});
+            budget.fetch();
+
+            var budgetView = new BudgetView({model: budget});
+            budgetView.render();
         }
-
-        /*register: function() {
-            var user = new User();
-            var registerView = new RegisterView({model: user});
-            registerView.render();
-        },
-
-        login: function() {
-            var loginView = new LoginView({model: session});
-            loginView.render();
-        },
-
-        randomRequest: function() {
-            var random = new Random();
-            random.fetch();
-        }*/
     });
 
     var initialize = function() {

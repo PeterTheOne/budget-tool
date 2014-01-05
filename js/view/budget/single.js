@@ -1,17 +1,18 @@
 define([
     'underscore',
     'backbone',
-    'view/budget/single'
-], function(_, Backbone, BudgetView){
+    'text!template/budgetListSingle.html',
+], function(_, Backbone, budgetListSingleTemplate){
     var BudgetSingleView = Backbone.View.extend({
         tagName: 'li',
+        className: 'media',
 
         initialize: function() {
 
         },
 
         render: function() {
-            this.$el.html('budget single view');
+            var single = this.$el.html(_.template(budgetListSingleTemplate, this.model.toJSON()));
 
 
         }

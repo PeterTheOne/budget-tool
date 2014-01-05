@@ -61,6 +61,25 @@ class BudgetRepository extends AbstractRepository {
 
     /**
      * @param $userId
+     * @param $name
+     *
+     * @return array
+     */
+    public function getBudgetByUserAndName($userId, $name) {
+        $statement = $this->pdo->prepare('
+            SELECT id, created, userId, name, description, private
+            FROM ' . $this->tableName . '
+            WHERE userId = :userId AND name = :name
+            LIMIT 1;
+        ');
+        $statement->bindParam(':userId', $userId);
+        $statement->bindParam(':name', $name);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * @param $userId
      *
      * @return array
      */
@@ -73,5 +92,34 @@ class BudgetRepository extends AbstractRepository {
         $statement->bindParam(':userId', $userId);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * @param $userId
+     * @param $name
+     * @param $description
+     * @param $private
+     *
+     * @return stdClass
+     */
+    public function createBudget($userId, $name, $description, $private) {
+        $statement = $this->pdo->prepare('
+            INSERT INTO ' . $this->tableName . '
+            (userId, name, description, private)
+            VALUES (:userId, :name, :description, :private);
+        ');
+        $statement->bindParam(':userId', $userId);
+        $statement->bindParam(':name', $name);
+        $statement->bindParam(':description', $description);
+        $statement->bindParam(':private', $private, PDO::PARAM_BOOL);
+        $statement->execute();
+
+        $budget = new stdClass();
+        $budget->id = $this->pdo->lastInsertId();
+        $budget->userId = $userId;
+        $budget->name = $name;
+        $budget->description = $description;
+        $budget->private = $private;
+        return $budget;
     }
 } 

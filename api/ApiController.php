@@ -148,6 +148,7 @@ class ApiController {
         $sessionRepository->addSession($user->id, $secondsToExpire, $sessionToken, $remember);
 
         return array(
+            'userId' => $user->id,
             'username' => $username,
             'password' => '',
             'remember' => $remember,
@@ -191,6 +192,7 @@ class ApiController {
         $sessionRepository->removeSession($sessionToken);
 
         return array(
+            'userId' => '',
             'username' => '',
             'password' => '',
             'remember' => '',
@@ -219,5 +221,51 @@ class ApiController {
             return $budgetRepository->getBudgetsByUser($userId);
         }
         return $budgetRepository->getPublicBudgetsByUser($userId);
+    }
+
+    /**
+     * @param $username
+     * @param $sessionToken
+     * @param $name
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function getBudgetByUsernameAndName($username, $sessionToken, $name) {
+        $sessionUserId = $this->checkSession($sessionToken);
+
+        $userRepository = new UserRepository($this->pdo);
+        $user = $userRepository->getUser($username);
+
+        $budgetRepository = new BudgetRepository($this->pdo);
+        $budget = $budgetRepository->getBudgetByUserAndName($user->id, $name);
+
+        if ($sessionUserId !== $user->id && $budget->private) {
+            // todo: create 401 Exception
+            throw new Exception('You are not authorized.');
+        }
+
+        return $budget;
+    }
+
+    /**
+     * @param $userId
+     * @param $sessionToken
+     * @param $name
+     * @param $description
+     * @param $private
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function createBudget($userId, $sessionToken, $name, $description, $private) {
+        $sessionUserId = $this->checkSession($sessionToken);
+        $budgetRepository = new BudgetRepository($this->pdo);
+        if ($sessionUserId !== $userId) {
+            // todo: create 401 Exception
+            throw new Exception('You are not authorized.');
+        }
+        // todo: check if paying user else $pivate === true is not allowed.
+        return $budgetRepository->createBudget($userId, $name, $description, 0);
     }
 }

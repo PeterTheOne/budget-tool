@@ -164,4 +164,62 @@ $app->get('/budget(/)', function() use($app, $config, $pdo) {
     }
 });
 
+$app->get('/budget/:username/:name(/)', function($username, $name) use($app, $config, $pdo) {
+    try {
+
+        $sessionToken = $app->request()->headers->get('X-Session-Token');
+
+        $apiController = new ApiController($config, $pdo);
+
+        $budget = $apiController->getBudgetByUsernameAndName($username, $sessionToken, $name);
+
+        $app->response()->body(json_encode($budget, JSON_PRETTY_PRINT));
+    } catch (Exception $exception) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        $result = array(
+            'exception' => $exception->getMessage()
+        );
+        $app->response()->body(json_encode($result, JSON_PRETTY_PRINT));
+
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $exception->getMessage());
+    }
+});
+
+$app->post('/budget(/)', function() use($app, $config, $pdo) {
+    try {
+        $params = (array) json_decode($app->request()->getBody());
+        if (!isset($params['userId']) || strlen($params['userId']) === 0 ||
+            !isset($params['name']) || strlen($params['name']) === 0) {
+            throw new Exception('params not set.');
+        }
+        $sessionToken = $app->request()->headers->get('X-Session-Token');
+
+        $apiController = new ApiController($config, $pdo);
+        $budget = $apiController->createBudget(
+            $params['userId'],
+            $sessionToken,
+            $params['name'],
+            $params['description'],
+            (bool) $params['private']
+        );
+
+        $app->response()->body(json_encode($budget, JSON_PRETTY_PRINT));
+    } catch (Exception $exception) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        $result = array(
+            'exception' => $exception->getMessage()
+        );
+        $app->response()->body(json_encode($result, JSON_PRETTY_PRINT));
+
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $exception->getMessage());
+    }
+});
+
 $app->run();

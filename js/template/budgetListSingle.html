@@ -1,0 +1,16 @@
+<a class="pull-left" href="#">
+    <img class="media-object" src="" alt="">
+</a>
+<div class="media-body">
+    <h4 class="media-heading">
+        <%- name %>
+        <small>
+            <% if (private == true) { %>
+            <span class="label label-info">Private</span>
+            <% } else { %>
+            <span class="label label-warning">Public</span>
+            <% } %>
+        </small>
+    </h4>
+    <p><%- description %></p>
+</div>

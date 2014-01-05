@@ -69,7 +69,8 @@ define([
                     username: sessionStorage.getItem('username'),
                     password: '',
                     sessionToken: sessionStorage.getItem('sessionToken'),
-                    remember: sessionStorage.getItem('remember')
+                    remember: sessionStorage.getItem('remember'),
+                    userId: sessionStorage.getItem('userId')
                 }, {silent: true});
                 self.setHeader();
 
@@ -80,7 +81,8 @@ define([
                     username: localStorage.getItem('username'),
                     password: '',
                     sessionToken: localStorage.getItem('sessionToken'),
-                    remember: localStorage.getItem('remember')
+                    remember: localStorage.getItem('remember'),
+                    userId: localStorage.getItem('userId')
                 }, {silent: true});
                 self.setHeader();
 
