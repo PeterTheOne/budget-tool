@@ -22,8 +22,8 @@ $app->post('/user(/)', function() use($app, $config, $pdo) {
         if (!isset($params['username']) || strlen($params['username']) === 0 ||
                 !isset($params['firstname']) || strlen($params['firstname']) === 0 ||
                 !isset($params['lastname']) || strlen($params['lastname']) === 0 ||
-                !isset($params['email']) || strlen($params['username']) === 0 ||
-                !isset($params['password']) || strlen($params['username']) === 0) {
+                !isset($params['email']) || strlen($params['email']) === 0 ||
+                !isset($params['password']) || strlen($params['password']) === 0) {
             throw new Exception('params not set.');
         }
 
